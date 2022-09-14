@@ -13,26 +13,6 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
-        /*private IEnumerable<Evento> _eventos = new Evento[] {
-                new Evento(){
-                    EventoId = 1,
-                    Tema = "Angular e C",
-                    Local = "BSB",
-                    Lote = "1 lote",
-                    QtdPessoas = 250,
-                    DataEvento = "01/02/2003",
-                    ImagemURL = "foto.png"
-                },
-                new Evento(){
-                    EventoId = 2,
-                    Tema = "CSS e CSharp",
-                    Local = "SP",
-                    Lote = "2 lote",
-                    QtdPessoas = 500,
-                    DataEvento = "10/08/2022",
-                    ImagemURL = "foto2.png"
-                }
-            };*/
         private readonly DataContext _context;
         public EventoController(DataContext context)
         {
