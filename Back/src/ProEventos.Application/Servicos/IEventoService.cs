@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
+using ProEventos.Application.Dtos;
 using ProEventos.Domain;
 
 namespace ProEventos.Application.Servicos
 {
     public interface IEventoService
     {
-        Task<Evento> AddEventos(Evento model);
-        Task<Evento> UpdateEvento(int id, Evento model);
+        Task<EventoDto> AddEventos(EventoDto model);
+        Task<EventoDto> UpdateEvento(int id, EventoDto model);
         Task<bool> DeleteEvento(int id);
 
-        Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false);
-        Task<Evento[]> GetAllEventosAsync(bool includePalestrantes = false);
-        Task<Evento> GetEventoByIdAsync(int id, bool includePalestrantes = false);
+        Task<EventoDto[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false);
+        Task<EventoDto[]> GetAllEventosAsync(bool includePalestrantes = false);
+        Task<EventoDto> GetEventoByIdAsync(int id, bool includePalestrantes = false);
     }
 }

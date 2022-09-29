@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProEventos.Domain
 {
@@ -11,6 +12,7 @@ namespace ProEventos.Domain
 
         public DateTime? DataEvento { get; set; }
 
+        [Required, MaxLength(50)]
         public string Tema { get; set; }
 
         public int QtdPessoas { get; set; }
@@ -19,6 +21,7 @@ namespace ProEventos.Domain
 
         public string Telefone { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         public IEnumerable<Lote> Lotes { get; set; }
