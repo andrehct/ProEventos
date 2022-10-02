@@ -5,7 +5,7 @@
         <div class="form-group col-md-12">
           <label>Tema</label>
           <input type="text" class="form-control"
-          [ngClass]="{'is-invalid': f.tema.errors && f.tema.touched}"
+          [ngClass]="cssValidator(f.tema)"
           formControlName="tema" placeholder="Insira o Tema">
           <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
             Esse campo deve ser preenchido.
@@ -25,7 +25,9 @@
         </div>
         <div class="form-group col-md-4">
           <label>Data e Hora</label>
-          <input type="datetime" class="form-control" formControlName="dataEvento" placeholder="">
+          <input type="datetime" class="form-control"
+          bsDatepicker [bsConfig]="bsconfig"
+          formControlName="dataEvento" placeholder="">
         </div>
       </div>
       <div class="form-row">
@@ -40,7 +42,7 @@
         <div class="form-group col-md-4">
           <label>Email</label>
           <input type="text" class="form-control is-invalid"
-          [ngClass]="{'is-invalid': f.email.errors && f.email.touched}"
+          [ngClass]="cssValidator(f.email)"
           formControlName="email" placeholder="e-mail">
           <div *ngIf="f.email.errors?.required" class="invalid-feedback">
             Esse campo deve ser preenchido.
@@ -60,7 +62,7 @@
         <button class="btn btn-outline-secondary mr-auto border" (click)="resetarForm()">
           Cancelar Alteração
         </button>
-        <button class="btn btn-success" [disabled]="!form.valid">
+        <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAlteracao()">
           Salvar Evento
         </button>
       </div>

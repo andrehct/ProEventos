@@ -119,7 +119,7 @@ namespace ProEventos.API.Controllers
                 if(evento == null) return NoContent();
 
                 if(await _eventoService.DeleteEvento(id))
-                    return Ok("Deletado");
+                    return Ok(new {message = "Deletado"}); //boa prática retornar um objeto
                 else
                     throw new Exception("Erro ao tentar deletar evento.");
             }
