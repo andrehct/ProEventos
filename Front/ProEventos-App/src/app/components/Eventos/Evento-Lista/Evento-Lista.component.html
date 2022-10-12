@@ -41,7 +41,7 @@
       <tr *ngFor="let e of eventosFiltrados" (click)="detalheEvento(e.id)" style="cursor: pointer;">
         <td class="d-none d-md-table-cell">
           <img [collapse]="!showImgs"
-            src="/assets/{{e.imagemURL}}"
+            [src]="mostraImagem(e.imagemURL)"
             alt=""
             [isAnimated]="true"
             [style.width.px]="widthImgs"
