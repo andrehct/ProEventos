@@ -10,16 +10,31 @@ import { PerfilComponent } from './components/User/Perfil/Perfil.component';
 import { LoginComponent } from './components/User/Login/Login.component';
 import { RegistroComponent } from './components/User/Registro/Registro.component';
 import { UserComponent } from './components/User/User.component';
+import { AuthGuard } from './guard/auth.guard';
+import { HomeComponent } from './components/Home/Home.component';
 
 const routes: Routes = [
-  {path: 'Eventos', redirectTo: 'Eventos/Lista'},
-  {path: '', redirectTo: 'Dashboard', pathMatch: 'full'},
+  {path: '', redirectTo: 'Home', pathMatch: 'full'},
   {
-    path: 'Eventos', component: EventosComponent,
+    //Paginas que vão precisar ter a rota protegida para somente serem acessadas após login
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
     children: [
-      {path: 'Detalhe/:id', component: EventoDetalheComponent},
-      {path: 'Detalhe', component: EventoDetalheComponent},
-      {path: 'Lista', component: EventoListaComponent}
+      {path: 'Eventos', redirectTo: 'Eventos/Lista'},
+      {path: 'User', redirectTo: 'User/Perfil'},
+      {path: 'Palestrantes', component: PalestrantesComponent},
+      {path: 'User/Perfil', component: PerfilComponent},
+      {path: 'Dashboard', component: DashboardComponent},
+      {path: 'Contatos', component: ContatosComponent},
+      {
+        path: 'Eventos', component: EventosComponent,
+        children: [
+          {path: 'Detalhe/:id', component: EventoDetalheComponent},
+          {path: 'Detalhe', component: EventoDetalheComponent},
+          {path: 'Lista', component: EventoListaComponent}
+        ]
+      }
     ]
   },
   {
@@ -29,11 +44,8 @@ const routes: Routes = [
       {path: 'Registro', component: RegistroComponent}
     ]
   },
-  {path: 'Palestrantes', component: PalestrantesComponent},
-  {path: 'User/Perfil', component: PerfilComponent},
-  {path: 'Dashboard', component: DashboardComponent},
-  {path: 'Contatos', component: ContatosComponent},
-  {path: '**', redirectTo: 'Dashboard', pathMatch: 'full'},
+  {path: 'Home', component: HomeComponent},
+  {path: '**', redirectTo: 'Home', pathMatch: 'full'}
 ];
 
 @NgModule({

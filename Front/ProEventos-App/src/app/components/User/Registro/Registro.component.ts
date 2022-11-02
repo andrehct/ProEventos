@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ValidatorField } from '@app/helpers/ValidatorField';
+import { User } from '@app/models/identity/User';
+import { AccountService } from '@app/services/account.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-Registro',
@@ -8,8 +12,10 @@ import { ValidatorField } from '@app/helpers/ValidatorField';
   styleUrls: ['./Registro.component.scss']
 })
 export class RegistroComponent implements OnInit {
+  user = {} as User;
   form!: FormGroup;
-  constructor(public fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private accountService: AccountService,
+              private router: Router, private toastr: ToastrService) { }
 
   get f(): any{
     return this.form.controls;
@@ -21,7 +27,7 @@ export class RegistroComponent implements OnInit {
 
   private validation(): void{
     const formOptions: AbstractControlOptions={
-      validators: ValidatorField.MustMatch('senha', 'confirmarSenha')
+      validators: ValidatorField.MustMatch('password', 'confirmarPassword')
     }
 
     this.form = this.fb.group({
@@ -29,8 +35,16 @@ export class RegistroComponent implements OnInit {
       ultNome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       userName: ['', Validators.required],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarSenha: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarPassword: ['', Validators.required]
     }, formOptions)
+  }
+
+  public register():void{
+    this.user = { ... this.form.value}
+    this.accountService.registerAcc(this.user).subscribe(
+      () => this.router.navigateByUrl('/Dashboard'),
+      (error : any) => this.toastr.error(error.error)
+    );
   }
 }

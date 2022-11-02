@@ -11,7 +11,7 @@
               <input type="text" class="form-control"
               formControlName="tema" placeholder="Insira o Tema"
               [ngClass]="cssValidator(f.tema)"
-              [(ngModel)]="evento.tema">
+              >
               <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
                 Esse campo deve ser preenchido.
               </div>
@@ -27,33 +27,33 @@
             <div class="form-group col-md-8">
               <label>Local</label>
               <input type="text" class="form-control" formControlName="local" placeholder=""
-              [(ngModel)]="evento.local">
+              >
             </div>
             <div class="form-group col-md-4">
               <label>Data e Hora</label>
               <input type="datetime" class="form-control"
               bsDatepicker [bsConfig]="bsconfig"
               formControlName="dataEvento" placeholder=""
-              [(ngModel)]="evento.dataEvento">
+              >
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-2">
               <label>Qtd Pessoas</label>
               <input type="text" class="form-control" formControlName="qtdPessoas" placeholder=""
-              [(ngModel)]="evento.qtdPessoas">
+              >
             </div>
             <div class="form-group col-md-4">
               <label>Telefone</label>
               <input type="text" class="form-control" formControlName="telefone"
-              placeholder="(00) 90000-0000" [(ngModel)]="evento.telefone">
+              placeholder="(00) 90000-0000" >
             </div>
             <div class="form-group col-md-6">
               <label>Email</label>
               <input type="text" class="form-control is-invalid"
               [ngClass]="cssValidator(f.email)"
               formControlName="email" placeholder="e-mail"
-              [(ngModel)]="evento.email">
+              >
               <div *ngIf="f.email.errors?.required" class="invalid-feedback">
                 Esse campo deve ser preenchido.
               </div>
@@ -170,22 +170,22 @@
           tooltip="Upload de Nova Imagem" [adaptivePosition]="false" placement="bottom" />
         </div>
         <div class="card-body pt-3">
-          <h4>{{evento.tema}}</h4>
+          <h4>{{evento?.tema}}</h4>
           <p class="card-text">
-            <b>Local:</b> {{evento.local}}
+            <b>Local:</b> {{evento?.local}}
             <br>
-            <b>Data:</b> {{evento.dataEvento | DateTimeFormatPipeName}}
+            <b>Data:</b> {{evento?.dataEvento | DateTimeFormatPipeName}}
           </p>
           <hr>
           <p class="card-text">
             <b>Contatos</b><br>
-            <small class="text-muted">Telefone: {{evento.telefone}}</small>
+            <small class="text-muted">Telefone: {{evento?.telefone}}</small>
             <br>
-            <small class="text-muted">e-mail: {{evento.email}}</small>
+            <small class="text-muted">e-mail: {{evento?.email}}</small>
           </p>
           <p class="card-text">
             Capacidade:
-            <small class="text-muted">{{evento.qtdPessoas}}</small>
+            <small class="text-muted">{{evento?.qtdPessoas}}</small>
           </p>
           <div class="row">
             <div class="icon-block col-md-8 iconesSociais">

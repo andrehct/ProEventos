@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +32,9 @@ import { RegistroComponent } from './components/User/Registro/Registro.component
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { defineLocale } from 'ngx-bootstrap/chronos'
 import { ptBrLocale } from 'ngx-bootstrap/locale'
+import { AccountService } from './services/account.service';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { HomeComponent } from './components/Home/Home.component';
 
 defineLocale('pt-br', ptBrLocale)
 
@@ -50,7 +53,8 @@ defineLocale('pt-br', ptBrLocale)
     EventoListaComponent,
     UserComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    HomeComponent
    ],
   imports: [
     BrowserModule,
@@ -75,9 +79,11 @@ defineLocale('pt-br', ptBrLocale)
   ],
   providers: [
     EventoService,
-    LoteService
+    LoteService,
+    AccountService,
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  //schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
