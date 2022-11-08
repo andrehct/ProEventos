@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
 using ProEventos.Persistence.InterfacesPersistencia;
+using ProEventos.Persistence.Models;
 
 namespace ProEventos.Persistence
 {
@@ -18,7 +19,7 @@ namespace ProEventos.Persistence
             //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        public async Task<Evento[]> GetAllEventosAsync(int userId, bool includePalestrantes = false)
+        public async Task<PageList<Evento>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false)
         {
             //Begin - "Includes" necessários em relações "um para muitos"
             IQueryable<Evento> query = _context.Eventos
@@ -33,31 +34,13 @@ namespace ProEventos.Persistence
                             .ThenInclude(pe => pe.Palestrante);
             }
             //End
-            query = query.AsNoTracking().Where(e => e.UserId == userId).OrderBy(e => e.Id);
+            query = query.AsNoTracking()
+                         .Where(e => (e.Tema.ToLower().Contains(pageParams.Term.ToLower()) ||
+                                      e.Local.ToLower().Contains(pageParams.Term.ToLower())) &&
+                                     e.UserId == userId)
+                         .OrderBy(e => e.Id);
 
-            return await query.ToArrayAsync();
-        }
-
-        public async Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            //Begin - "Includes" necessários em relações "um para muitos"
-            IQueryable<Evento> query = _context.Eventos
-                                                    .Include(e => e.Lotes)
-                                                    .Include(e => e.RedesSociais);
-            //End
-            //Begin - Necessário pois é uma relação "muitos para muitos"
-            if(includePalestrantes)
-            {
-                query = query
-                            .Include(e => e.PalestrantesEventos)
-                            .ThenInclude(pe => pe.Palestrante);
-            }
-            //End
-            query = query.AsNoTracking().OrderBy(e => e.Id)
-                         .Where(e => e.Tema.ToLower().Contains(tema.ToLower()) &&
-                                     e.UserId == userId);
-
-            return await query.ToArrayAsync();
+            return await PageList<Evento>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
         public async Task<Evento> GetEventoByIdAsync(int userId, int id, bool includePalestrantes = false)

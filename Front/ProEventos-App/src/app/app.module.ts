@@ -35,6 +35,7 @@ import { ptBrLocale } from 'ngx-bootstrap/locale'
 import { AccountService } from './services/account.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HomeComponent } from './components/Home/Home.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 defineLocale('pt-br', ptBrLocale)
 
@@ -75,7 +76,8 @@ defineLocale('pt-br', ptBrLocale)
     }),
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    PaginationModule.forRoot()
   ],
   providers: [
     EventoService,

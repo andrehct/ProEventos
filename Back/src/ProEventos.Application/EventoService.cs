@@ -6,6 +6,7 @@ using ProEventos.Application.Servicos;
 using System.Collections.Generic;
 using ProEventos.Application.Dtos;
 using AutoMapper;
+using ProEventos.Persistence.Models;
 
 namespace ProEventos.Application
 {
@@ -83,31 +84,31 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<EventoDto[]> GetAllEventosAsync(int userId, bool includePalestrantes = false)
+        public async Task<PageList<EventoDto>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false)
         {
             try
             {
-                var eventos = await _eventoPersist.GetAllEventosAsync(userId, includePalestrantes);
+                var eventos = await _eventoPersist.GetAllEventosAsync(userId, pageParams, includePalestrantes);
                 if (eventos == null) return null;
 
-                var resultado = _mapper.Map<EventoDto[]>(eventos);
+                //Se fizer apenas assim
+                //*****************************
+                /*var resultado = _mapper.Map<PageList<EventoDto>>(eventos);
+                return resultado;*/
+                //*****************************
+                //não vai ser retornado nenhum evento por causa do PageList
+                //de construtor vazio não fazer o "mapeamento"
 
-                return resultado;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+                var resultado = _mapper.Map<PageList<EventoDto>>(eventos);
 
-        public async Task<EventoDto[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            try
-            {
-                var eventos = await _eventoPersist.GetAllEventosByTemaAsync(userId, tema, includePalestrantes);
-                if (eventos == null) return null;
-
-                var resultado = _mapper.Map<EventoDto[]>(eventos);
+                //fazendo o mapeamento na mão, pois esse é simples, e como o PageList
+                //de construtor vazio não faz nada, fazemos aqui:
+                resultado.CurrentPage = eventos.CurrentPage;
+                resultado.TotalPages = eventos.TotalPages;
+                resultado.PageSize = eventos.PageSize;
+                resultado.TotalCount = eventos.TotalCount;
+                //ou seja, na declaração do resultado criamos o map do PageList vazio
+                //e depois fazemos o mapeamento na mão
 
                 return resultado;
             }
