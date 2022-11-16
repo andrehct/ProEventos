@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using ProEventos.Application.Dtos;
 using ProEventos.API.Extensions;
+using ProEventos.API.Helpers;
 
 namespace ProEventos.API.Controllers
 {
@@ -16,11 +17,14 @@ namespace ProEventos.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly IUtil _util;
+        private readonly string _destino = "Perfil";
 
-        public UserController(IUserService userService, ITokenService tokenService)
+        public UserController(IUserService userService, IUtil util, ITokenService tokenService)
         {
             this._tokenService = tokenService;
             this._userService = userService;
+            this._util = util;
         }
 
         [HttpGet("GetUser")]
@@ -116,6 +120,34 @@ namespace ProEventos.API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, 
                                     $"Erro ao tentar atualizar usuário. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("upload-image")]
+
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                var user = await _userService.GetUserByUsernameAsync(User.GetUserName());
+                if (user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+
+                if (file.Length > 0)
+                {
+                    _util.DeleteImage(user.ImagemURL, _destino);
+                    user.ImagemURL = await _util.SaveImage(file, _destino);
+                }
+
+                var UserRetorno = await _userService.UpdateUser(user);
+
+                return Ok(UserRetorno);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                                    $"Erro ao tentar realizar upload de imagem do usuário. Erro: {ex.Message}");
             }
         }
     }

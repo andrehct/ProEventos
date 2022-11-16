@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ProEventos.API.Helpers;
 
 namespace ProEventos.API
 {
@@ -82,14 +83,23 @@ namespace ProEventos.API
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IEventoService, EventoService>();
-            services.AddScoped<ILoteService, LoteService>();
+            
             services.AddScoped<IGeralPersist, GeralPersistence>();
             services.AddScoped<IEventoPersist, EventoPersistence>();
+            services.AddScoped<IPalestrantePersist, PalestrantePersistence>();
+            services.AddScoped<IRedeSocialPersist, RedeSocialPersistence>();
             services.AddScoped<ILotePersist, LotePersistence>();
             services.AddScoped<IUserPersist, UserPersistence>();
+
+            services.AddScoped<IUtil, Util>();
+
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPalestranteService, PalestranteService>();
+            services.AddScoped<IRedeSocialService, RedeSocialService>();
+
             services.AddCors();
             services.AddSwaggerGen(c =>
             {

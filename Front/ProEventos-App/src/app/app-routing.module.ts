@@ -27,6 +27,7 @@ const routes: Routes = [
       {path: 'User/Perfil', component: PerfilComponent},
       {path: 'Dashboard', component: DashboardComponent},
       {path: 'Contatos', component: ContatosComponent},
+      {path: 'Home', component: HomeComponent},
       {
         path: 'Eventos', component: EventosComponent,
         children: [
@@ -44,7 +45,6 @@ const routes: Routes = [
       {path: 'Registro', component: RegistroComponent}
     ]
   },
-  {path: 'Home', component: HomeComponent},
   {path: '**', redirectTo: 'Home', pathMatch: 'full'}
 ];
 
