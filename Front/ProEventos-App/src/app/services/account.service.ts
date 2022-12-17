@@ -52,16 +52,25 @@ export class AccountService {
   }
 
   public getUser(): Observable<UserUpdate>{
-    return this.http.get<UserUpdate>(this.baseUrl + 'getUser').pipe(take(1));
+    return this.http.get<UserUpdate>(this.baseUrl + 'GetUser').pipe(take(1));
   }
 
   public updateUser(model: UserUpdate): Observable<void>{
-    return this.http.put<UserUpdate>(this.baseUrl + 'updateUser', model).pipe(
+    return this.http.put<UserUpdate>(this.baseUrl + 'UpdateUser', model).pipe(
       take(1),
       map((user: UserUpdate) => {
               this.setCurrentUser(user);
             }
           )
         );
+  }
+
+  public postUpload(file: File): Observable<UserUpdate>{
+    const fileToUpload = file[0] as File;
+    const formData = new FormData;
+
+    formData.append('file', fileToUpload);
+
+    return this.http.post<UserUpdate>(`${this.baseUrl}upload-image`, formData).pipe(take(1));
   }
 }

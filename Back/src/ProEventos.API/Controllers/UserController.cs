@@ -49,14 +49,14 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                if(await _userService.UserExists(userDto.Username)) 
+                if(await _userService.UserExists(userDto.UserName)) 
                     return BadRequest("Usuário já existe");
 
                 var user = await _userService.CreateUserAsync(userDto);
 
                 if(user != null)
                     return Ok(new 
-                        {userName = user.Username,
+                        {userName = user.UserName,
                         primNome = user.PrimeiroNome,
                         token = _tokenService.CreateToken(user).Result}
                     );
@@ -76,14 +76,14 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var user = await _userService.GetUserByUsernameAsync(userLoginDto.Username);
+                var user = await _userService.GetUserByUsernameAsync(userLoginDto.UserName);
                 if(user == null) return Unauthorized("Usuário está errado");
 
                 var result = await _userService.CheckUserPassAsync(user, userLoginDto.Password);
                 if (!result.Succeeded) return Unauthorized();
 
                 return Ok(new 
-                    {userName = user.Username,
+                    {userName = user.UserName,
                     primNome = user.PrimeiroNome,
                     token = _tokenService.CreateToken(user).Result}
                 );
@@ -100,7 +100,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                if(userUpdateDto.Username != User.GetUserName())
+                if(userUpdateDto.UserName != User.GetUserName())
                     return Unauthorized("Usuário inválido!");
 
                 var user = await _userService.GetUserByUsernameAsync(User.GetUserName());
@@ -112,7 +112,7 @@ namespace ProEventos.API.Controllers
                     return NoContent();
 
                 return Ok(new 
-                    {userName = userReturn.Username,
+                    {userName = userReturn.UserName,
                     primNome = userReturn.PrimeiroNome,
                     token = _tokenService.CreateToken(userReturn).Result});
             }
@@ -136,7 +136,8 @@ namespace ProEventos.API.Controllers
 
                 if (file.Length > 0)
                 {
-                    _util.DeleteImage(user.ImagemURL, _destino);
+                    if(user.ImagemURL != null)
+                        _util.DeleteImage(user.ImagemURL, _destino);
                     user.ImagemURL = await _util.SaveImage(file, _destino);
                 }
 

@@ -96,7 +96,7 @@ namespace ProEventos.Application
                     else
                     {
                         var redeSocial = redesSociais.FirstOrDefault(redeSocial => redeSocial.Id == model.Id);
-                        model.EventoId = palestranteId;
+                        model.PalestranteId = palestranteId;
 
                         _mapper.Map(model, redeSocial);
                         _redeSocialPersist.Update<RedeSocial>(redeSocial);

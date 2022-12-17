@@ -36,6 +36,11 @@ import { AccountService } from './services/account.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HomeComponent } from './components/Home/Home.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PerfilDetalheComponent } from './components/User/Perfil/Perfil-Detalhe/Perfil-Detalhe.component';
+import { PalestranteListaComponent } from './components/Palestrantes/Palestrante-Lista/Palestrante-Lista.component';
+import { PalestranteDetalheComponent } from './components/Palestrantes/Palestrante-Detalhe/Palestrante-Detalhe.component';
+import { RedesSociaisComponent } from './components/RedesSociais/RedesSociais.component';
 
 defineLocale('pt-br', ptBrLocale)
 
@@ -43,6 +48,9 @@ defineLocale('pt-br', ptBrLocale)
   declarations: [
     AppComponent,
     PalestrantesComponent,
+    PalestranteListaComponent,
+    PalestranteDetalheComponent,
+    RedesSociaisComponent,
     EventosComponent,
     ContatosComponent,
     PerfilComponent,
@@ -55,7 +63,8 @@ defineLocale('pt-br', ptBrLocale)
     UserComponent,
     LoginComponent,
     RegistroComponent,
-    HomeComponent
+    HomeComponent,
+    PerfilDetalheComponent
    ],
   imports: [
     BrowserModule,
@@ -77,7 +86,8 @@ defineLocale('pt-br', ptBrLocale)
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
     NgxCurrencyModule,
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     EventoService,
